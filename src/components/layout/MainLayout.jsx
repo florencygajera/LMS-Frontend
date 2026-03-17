@@ -17,18 +17,10 @@ export const MainLayout = ({
 
   return (
     <div className="min-h-screen bg-[#0B0F19]">
-      {/* Government Strip */}
       <GovStrip />
-      
-      {/* Site Header */}
       <SiteHeader onHome={() => setPage('home')} />
-      
-      {/* Navigation Bar */}
       <Navbar page={page} setPage={setPage} user={user} setUser={setUser} />
-      
-      {/* Main Content Area */}
       <div className="flex">
-        {/* Sidebar */}
         {showSidebar && user && (
           <Sidebar 
             page={page} 
@@ -37,8 +29,6 @@ export const MainLayout = ({
             sosAlerts={sosAlerts} 
           />
         )}
-        
-        {/* Main Content */}
         <main className={`flex-1 ${showSidebar && user ? '' : 'max-w-[1600px] mx-auto w-full'} p-6`}>
           {children}
         </main>
