@@ -40,6 +40,23 @@ const Navbar = ({ page, setPage, user, onLogout }) => {
     ],
   };
 
+  // Get force color based on role
+  const getForceColor = () => {
+    if (user?.role === 'ADMIN') return 'navy';
+    if (user?.role === 'SOLDIER') return 'army';
+    if (user?.role === 'TRAINER') return 'army';
+    if (user?.role === 'DOCTOR') return 'airforce';
+    return 'army';
+  };
+
+  const force = getForceColor();
+  const forceColors = {
+    army: { bg: 'bg-army-600', hover: 'hover:bg-army-700', border: 'border-army-500', text: 'text-army-600' },
+    navy: { bg: 'bg-navy-600', hover: 'hover:bg-navy-700', border: 'border-navy-500', text: 'text-navy-600' },
+    airforce: { bg: 'bg-airforce-600', hover: 'hover:bg-airforce-700', border: 'border-airforce-500', text: 'text-airforce-600' },
+  };
+  const colors = forceColors[force] || forceColors.army;
+
   const links = user ? (rLinks[user.role] || gLinks) : gLinks;
 
   const isActive = (k) => {
@@ -50,16 +67,16 @@ const Navbar = ({ page, setPage, user, onLogout }) => {
   };
 
   return (
-    <div className="bg-[#1a2d4a] sticky top-0 z-[300] shadow-md">
+    <div className={`${colors.bg} shadow-nav`}>
       <div className="max-w-[1300px] mx-auto px-4 flex items-stretch">
         <div className="flex items-stretch">
           {links.map(l => (
             <div
               key={l.k}
-              className={`px-4 py-2.5 text-[13px] cursor-pointer border-b-[3px] transition-all duration-150 whitespace-nowrap ${
+              className={`px-4 py-3 text-[13px] cursor-pointer border-b-[3px] transition-all duration-150 whitespace-nowrap ${
                 isActive(l.k)
-                  ? 'text-white border-b-[#c8601a] bg-white/5'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white border-b-transparent'
+                  ? 'text-white border-white'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white border-transparent'
               }`}
               onClick={() => setPage(l.k)}
             >
@@ -71,12 +88,12 @@ const Navbar = ({ page, setPage, user, onLogout }) => {
         <div className="flex items-center gap-3 px-3">
           {user ? (
             <>
-              <span className="text-[12px] text-white/70">
-                Welcome, <b className="text-white">{user.name.split(' ')[0]}</b>{' '}
-                <span className="text-[#c8601a] font-semibold">[{user.role}]</span>
+              <span className="text-[12px] text-white/80">
+                Welcome, <b className="text-white">{user.name?.split(' ')[0] || 'User'}</b>{' '}
+                <span className="text-saffron-400 font-semibold">[{user.role}]</span>
               </span>
               <button
-                className="px-3 py-1.5 text-[12px] font-semibold cursor-pointer border-none bg-[#c8601a] text-white hover:bg-[#d97020] transition-colors"
+                className="px-4 py-1.5 text-[12px] font-semibold cursor-pointer border-none bg-white/10 text-white hover:bg-white/20 rounded-md transition-colors"
                 onClick={onLogout}
               >
                 Logout
@@ -84,7 +101,7 @@ const Navbar = ({ page, setPage, user, onLogout }) => {
             </>
           ) : (
             <button
-              className="px-3 py-1.5 text-[12px] font-semibold cursor-pointer border-none bg-[#c8601a] text-white hover:bg-[#d97020] transition-colors"
+              className="px-4 py-1.5 text-[12px] font-semibold cursor-pointer border-none bg-white text-slate-800 hover:bg-slate-100 rounded-md transition-colors shadow-sm"
               onClick={() => setPage('login')}
             >
               Login / Apply
@@ -106,16 +123,16 @@ const Ticker = () => {
   ];
 
   return (
-    <div className="bg-white border-b border-[#d0d0c8] py-1 overflow-hidden flex items-center">
-      <div className="max-w-[1300px] mx-auto px-4 flex items-center w-full">
-        <div className="bg-[#c0392b] text-white text-[10px] font-bold px-3 py-0.5 whitespace-nowrap flex-shrink-0 tracking-wider mr-3">
+    <div className="bg-white border-b border-slate-200 py-2 overflow-hidden">
+      <div className="max-w-[1300px] mx-auto px-4 flex items-center">
+        <span className="bg-saffron-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-sm whitespace-nowrap mr-3">
           LATEST
-        </div>
+        </span>
         <div className="overflow-hidden flex-1">
-          <div className="ticker-scroll whitespace-nowrap">
-            {[...items, ...items].map((t, i) => (
-              <span key={i} className="text-[12px] text-[#444] px-7">
-                ◆ {t}
+          <div className="flex animate-scroll whitespace-nowrap">
+            {[...items, ...items].map((text, i) => (
+              <span key={i} className="text-[12px] text-slate-600 px-7">
+                ◆ {text}
               </span>
             ))}
           </div>
@@ -126,3 +143,4 @@ const Ticker = () => {
 };
 
 export { Navbar, Ticker };
+export default { Navbar, Ticker };

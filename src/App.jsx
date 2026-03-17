@@ -758,7 +758,17 @@ function App() {
       case 'CANDIDATE':
         return <CandidatePortal page={page} setPage={setPage} />;
       
+      case 'TRAINER':
+        return <SoldierDashboard page={page} setPage={setPage} user={user} soldiers={soldiers} battalions={battalions} />;
+
+      case 'DOCTOR':
+        return <SoldierDashboard page={page} setPage={setPage} user={user} soldiers={soldiers} battalions={battalions} />;
+
       default:
+        // Default to SoldierDashboard for unknown roles
+        if (user.role === 'TRAINER' || user.role === 'DOCTOR') {
+          return <SoldierDashboard page={page} setPage={setPage} user={user} soldiers={soldiers} battalions={battalions} />;
+        }
         return <LandingPage setPage={setPage} />;
     }
   };
