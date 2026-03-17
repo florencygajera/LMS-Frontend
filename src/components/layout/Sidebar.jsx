@@ -1,61 +1,59 @@
-// Sidebar Configuration
-const sidebarSections = {
-  ADMIN: [
-    { section: 'OVERVIEW', items: [
-      { key: 'admin', icon: '📊', label: 'Dashboard' },
-      { key: 'admin-sos', icon: '🚨', label: 'SOS Alerts', count: null },
-      { key: 'admin-audit', icon: '🔐', label: 'Audit Log' }
-    ]},
-    { section: 'AI & INTELLIGENCE', items: [
-      { key: 'admin-agniassist', icon: '🤖', label: 'AgniAssist AI' },
-      { key: 'admin-ml', icon: '📈', label: 'ML Insights' }
-    ]},
-    { section: 'RECRUITMENT', items: [
-      { key: 'admin-applications', icon: '📋', label: 'Applications', count: 5 }
-    ]},
-    { section: 'BATTALION & SOLDIERS', items: [
-      { key: 'admin-battalions', icon: '🏛️', label: 'All Battalions' },
-      { key: 'admin-soldiers', icon: '👥', label: 'All Soldiers' },
-      { key: 'admin-rankings', icon: '🏆', label: 'Rankings' }
-    ]},
-  ],
-  SOLDIER: [
-    { section: 'SOLDIER PORTAL', items: [
-      { key: 'soldier', icon: '🏠', label: 'Dashboard' },
-      { key: 'training', icon: '💪', label: 'Training' },
-      { key: 'schedule', icon: '📅', label: 'Schedule' },
-      { key: 'medical', icon: '🏥', label: 'Medical' },
-      { key: 'equipment', icon: '🔧', label: 'Equipment' },
-      { key: 'stipend', icon: '💰', label: 'Stipend' },
-      { key: 'soldier-ai', icon: '🤖', label: 'AgniAssist AI' },
-      { key: 'soldier-insights', icon: '📈', label: 'AI Insights' },
-      { key: 'soldier-docs', icon: '📄', label: 'Documents / OCR' }
-    ]},
-  ],
-  CANDIDATE: [
-    { section: 'CANDIDATE PORTAL', items: [
-      { key: 'candidate', icon: '📋', label: 'My Application' },
-      { key: 'status', icon: '🔍', label: 'Track Status' },
-      { key: 'admitcard', icon: '🎫', label: 'Admit Card' }
-    ]},
-  ],
-  TRAINER: [
-    { section: 'TRAINER PORTAL', items: [
-      { key: 'trainer', icon: '📊', label: 'Dashboard' },
-      { key: 'upload', icon: '📤', label: 'Upload Data' }
-    ]},
-  ],
-  DOCTOR: [
-    { section: 'MEDICAL PORTAL', items: [
-      { key: 'doctor', icon: '🏥', label: 'Medical Records' },
-      { key: 'doctor-add', icon: '📋', label: 'Add Record' },
-      { key: 'doctor-stats', icon: '📊', label: 'Health Stats' }
-    ]},
-  ],
-};
+// Sidebar Component with Dark Theme
 
 export const Sidebar = ({ page, setPage, user, sosAlerts = [] }) => {
-  const sections = sidebarSections[user?.role] || sidebarSections.ADMIN;
+  const sections = {
+    ADMIN: [
+      { section: 'OVERVIEW', items: [
+        { key: 'admin', icon: '📊', label: 'Dashboard' },
+        { key: 'admin-sos', icon: '🚨', label: 'SOS Alerts' },
+        { key: 'admin-audit', icon: '🔐', label: 'Audit Log' }
+      ]},
+      { section: 'AI & INTELLIGENCE', items: [
+        { key: 'admin-agniassist', icon: '🤖', label: 'AgniAssist AI' },
+        { key: 'admin-ml', icon: '📈', label: 'ML Insights' }
+      ]},
+      { section: 'RECRUITMENT', items: [
+        { key: 'admin-applications', icon: '📋', label: 'Applications', count: 5 }
+      ]},
+      { section: 'BATTALION & SOLDIERS', items: [
+        { key: 'admin-battalions', icon: '🏛️', label: 'All Battalions' },
+        { key: 'admin-soldiers', icon: '👥', label: 'All Soldiers' },
+        { key: 'admin-rankings', icon: '🏆', label: 'Rankings' }
+      ]},
+    ],
+    SOLDIER: [
+      { section: 'SOLDIER PORTAL', items: [
+        { key: 'soldier', icon: '🏠', label: 'Dashboard' },
+        { key: 'training', icon: '💪', label: 'Training' },
+        { key: 'schedule', icon: '📅', label: 'Schedule' },
+        { key: 'medical', icon: '🏥', label: 'Medical' },
+        { key: 'equipment', icon: '🔧', label: 'Equipment' },
+        { key: 'stipend', icon: '💰', label: 'Stipend' },
+        { key: 'soldier-ai', icon: '🤖', label: 'AgniAssist AI' },
+        { key: 'soldier-insights', icon: '📈', label: 'AI Insights' }
+      ]},
+    ],
+    CANDIDATE: [
+      { section: 'CANDIDATE PORTAL', items: [
+        { key: 'candidate', icon: '📋', label: 'My Application' },
+        { key: 'status', icon: '🔍', label: 'Track Status' },
+        { key: 'admitcard', icon: '🎫', label: 'Admit Card' }
+      ]},
+    ],
+    TRAINER: [
+      { section: 'TRAINER PORTAL', items: [
+        { key: 'trainer', icon: '📊', label: 'Dashboard' },
+        { key: 'upload', icon: '📤', label: 'Upload Data' }
+      ]},
+    ],
+    DOCTOR: [
+      { section: 'MEDICAL PORTAL', items: [
+        { key: 'doctor', icon: '🏥', label: 'Medical Records' }
+      ]},
+    ],
+  };
+
+  const currentSections = sections[user?.role] || sections.ADMIN;
   const activeSOSCount = sosAlerts?.filter(s => s.status === 'active')?.length || 0;
 
   const isActive = (key) => {
@@ -65,7 +63,6 @@ export const Sidebar = ({ page, setPage, user, sosAlerts = [] }) => {
       (key === 'admin-soldiers' && (page.startsWith('sol_') || page === 'admin-soldiers'));
   };
 
-  // Get initials for avatar
   const getInitials = (name) => {
     if (!name) return 'AV';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -92,7 +89,7 @@ export const Sidebar = ({ page, setPage, user, sosAlerts = [] }) => {
 
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto py-2">
-        {sections.map((section) => (
+        {currentSections.map((section) => (
           <div key={section.section} className="mb-4">
             <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white/30">
               {section.section}
