@@ -658,7 +658,7 @@ const SoldierDashboard = ({ page, setPage, user, soldiers, battalions }) => {
 };
 
 // Candidate Portal
-const CandidatePortal = ({ page, setPage }) => {
+const CandidatePortal = ({ page, setPage, user }) => {
   const renderPage = () => {
     if (page === 'candidate' || page === 'status') {
       return (
@@ -756,7 +756,7 @@ function App() {
         return <SoldierDashboard page={page} setPage={setPage} user={user} soldiers={soldiers} battalions={battalions} />;
       
       case 'CANDIDATE':
-        return <CandidatePortal page={page} setPage={setPage} />;
+        return <CandidatePortal page={page} setPage={setPage} user={user} />;
       
       case 'TRAINER':
         return <SoldierDashboard page={page} setPage={setPage} user={user} soldiers={soldiers} battalions={battalions} />;

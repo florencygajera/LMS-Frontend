@@ -1,27 +1,42 @@
 // Stat Card component for dashboard statistics
 export const StatCard = ({ label, value, variant = '', meta, valueColor = '' }) => {
   const variantClasses = {
-    '': 'border-t-[#4a5e3a]',
-    'navy': 'border-t-[#1a2d4a]',
-    'saffron': 'border-t-[#c8601a]',
-    'red': 'border-t-[#c0392b]',
-    'green': 'border-t-[#2e7d32]',
+    '': 'border-l-army-500',
+    'navy': 'border-l-navy-500',
+    'saffron': 'border-l-saffron-500',
+    'red': 'border-l-red-500',
+    'green': 'border-l-emerald-500',
+    'army': 'border-l-army-500',
+    'airforce': 'border-l-airforce-500',
   };
 
   const valueColorClasses = {
-    '': '',
-    'v-green': 'text-[#2e7d32]',
-    'v-saffron': 'text-[#c8601a]',
-    'v-red': 'text-[#c0392b]',
+    '': 'text-slate-800',
+    'v-green': 'text-emerald-600',
+    'v-saffron': 'text-saffron-600',
+    'v-red': 'text-red-600',
+    'v-navy': 'text-navy-600',
+  };
+
+  const iconColors = {
+    '': 'bg-army-50 text-army-600',
+    'navy': 'bg-navy-50 text-navy-600',
+    'saffron': 'bg-saffron-50 text-saffron-600',
+    'red': 'bg-red-50 text-red-600',
+    'green': 'bg-emerald-50 text-emerald-600',
+    'army': 'bg-army-50 text-army-600',
+    'airforce': 'bg-airforce-50 text-airforce-600',
   };
 
   return (
-    <div className={`bg-white border border-[#d0d0c8] border-t-[3px] p-4 ${variantClasses[variant] || ''}`}>
-      <div className="text-[11px] text-[#777] uppercase tracking-[0.7px] mb-1.5">{label}</div>
-      <div className={`font-serif text-[26px] font-bold text-[#1a2d4a] leading-none ${valueColorClasses[valueColor] || ''}`}>
-        {value}
+    <div className={`bg-white rounded-xl border border-slate-200 border-l-4 shadow-card hover:shadow-card-hover transition-shadow ${variantClasses[variant] || ''}`}>
+      <div className="p-4">
+        <div className="text-[11px] text-slate-500 uppercase tracking-wider font-medium mb-2">{label}</div>
+        <div className={`text-3xl font-bold font-serif ${valueColorClasses[valueColor] || ''}`}>
+          {value}
+        </div>
+        {meta && <div className="text-[11px] text-slate-500 mt-2">{meta}</div>}
       </div>
-      {meta && <div className="text-[11px] text-[#777] mt-1">{meta}</div>}
     </div>
   );
 };
@@ -29,102 +44,105 @@ export const StatCard = ({ label, value, variant = '', meta, valueColor = '' }) 
 // Panel component for grouped content
 export const Panel = ({ title, subtitle, children, className = '' }) => {
   return (
-    <div className={`bg-white border border-[#d0d0c8] mb-4 ${className}`}>
+    <div className={`bg-white rounded-xl border border-slate-200 shadow-card ${className}`}>
       {(title || subtitle) && (
-        <div className="flex justify-between items-center px-4 py-2.5 border-b border-[#d0d0c8] bg-[#f5f5f0]">
+        <div className="flex justify-between items-center px-5 py-4 border-b border-slate-100">
           <div>
-            {title && <div className="font-bold text-[14px] text-[#1a2d4a]">{title}</div>}
-            {subtitle && <div className="text-[11px] text-[#777]">{subtitle}</div>}
+            {title && <div className="font-semibold text-slate-800">{title}</div>}
+            {subtitle && <div className="text-[11px] text-slate-500">{subtitle}</div>}
           </div>
         </div>
       )}
-      <div className="p-4">{children}</div>
+      <div className="p-5">{children}</div>
     </div>
   );
 };
 
 // Score Bar component
 export const ScoreBar = ({ label, value, showGrade = true }) => {
-  const fillClass = value >= 85 ? 'bg-[#4a5e3a]' : value >= 70 ? 'bg-[#c8601a]' : 'bg-[#c0392b]';
-  const gradeInfo = value >= 90 ? { l: 'Outstanding', c: 'bg' } : value >= 80 ? { l: 'Good', c: 'bb' } : value >= 70 ? { l: 'Average', c: 'bo' } : { l: 'Needs Improvement', c: 'br' };
-  const scoreColor = value >= 85 ? '#2e7d32' : value >= 70 ? '#e65100' : '#c0392b';
+  const fillClass = value >= 85 ? 'bg-army-500' : value >= 70 ? 'bg-saffron-500' : 'bg-red-500';
+  const gradeInfo = value >= 90 ? { l: 'Outstanding', c: 'bg-emerald-100 text-emerald-700' } : value >= 80 ? { l: 'Good', c: 'bg-blue-100 text-blue-700' } : value >= 70 ? { l: 'Average', c: 'bg-amber-100 text-amber-700' } : { l: 'Needs Improvement', c: 'bg-red-100 text-red-700' };
+  const scoreColorValue = value >= 85 ? '#059669' : value >= 70 ? '#d97706' : '#dc2626';
 
   return (
     <div className="mb-3">
-      <div className="flex justify-between items-center text-[13px] mb-1">
-        <span className="text-[#444]">{label}</span>
-        <div className="flex items-center gap-1.5">
-          {showGrade && (
-            <span className={`px-2 py-0.5 text-[11px] font-semibold rounded ${gradeInfo.c === 'bg' ? 'bg-[#e8f5e9] text-[#2e7d32] border border-[#c8e6c9]' : gradeInfo.c === 'bb' ? 'bg-[#e3f2fd] text-[#1565c0] border border-[#bbdefb]' : gradeInfo.c === 'bo' ? 'bg-[#fff3e0] text-[#e65100] border border-[#ffe0b2]' : 'bg-[#fdecea] text-[#c62828] border border-[#ffcdd2]'}`}>
-              {gradeInfo.l}
-            </span>
-          )}
-          <span className="font-bold" style={{ color: scoreColor }}>{value}/100</span>
+      <div className="flex justify-between items-center mb-1.5">
+        <span className="text-[13px] text-slate-700 font-medium">{label}</span>
+        <div className="flex items-center gap-2">
+          {showGrade && <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${gradeInfo.c}`}>{gradeInfo.l}</span>}
+          <span className="text-[13px] font-bold" style={{ color: scoreColorValue }}>{value}/100</span>
         </div>
       </div>
-      <div className="h-2 bg-[#eaeae5] rounded-sm overflow-hidden">
-        <div className={`h-full rounded-sm transition-all duration-600 ${fillClass}`} style={{ width: `${value}%` }} />
+      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${fillClass} transition-all duration-500`} style={{ width: `${value}%` }} />
       </div>
     </div>
   );
 };
 
 // Badge component
-export const Badge = ({ children, variant = '' }) => {
+export const Badge = ({ variant = '', children }) => {
   const variantClasses = {
-    'bg': 'bg-[#e8f5e9] text-[#2e7d32] border border-[#c8e6c9]',
-    'br': 'bg-[#fdecea] text-[#c62828] border border-[#ffcdd2]',
-    'bo': 'bg-[#fff3e0] text-[#e65100] border border-[#ffe0b2]',
-    'bb': 'bg-[#e3f2fd] text-[#1565c0] border border-[#bbdefb]',
-    'bgy': 'bg-[#eaeae5] text-[#444] border border-[#d0d0c8]',
-    'bgold': 'bg-[#fffde7] text-[#6d4c41] border border-[#fff9c4]',
+    'bg': 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    'bb': 'bg-blue-100 text-blue-700 border-blue-200',
+    'bo': 'bg-amber-100 text-amber-700 border-amber-200',
+    'br': 'bg-red-100 text-red-700 border-red-200',
+    'bgy': 'bg-slate-100 text-slate-600 border-slate-200',
+    'gold': 'bg-amber-50 text-amber-800 border-amber-200',
   };
 
   return (
-    <span className={`inline-block px-2 py-0.5 text-[11px] font-semibold rounded-sm whitespace-nowrap ${variantClasses[variant] || variantClasses['bgy']}`}>
+    <span className={`inline-block px-2 py-0.5 text-[11px] font-semibold rounded border ${variantClasses[variant] || variantClasses.bgy}`}>
       {children}
     </span>
   );
 };
 
 // Alert component
-export const Alert = ({ children, variant = 'info' }) => {
+export const Alert = ({ variant = 'info', children, className = '' }) => {
   const variantClasses = {
-    'info': 'bg-[#e3f2fd] border-l-[3px] border-[#1565c0] text-[#0d47a1]',
-    'warn': 'bg-[#fff3e0] border-l-[3px] border-[#c8601a] text-[#bf360c]',
-    'success': 'bg-[#e8f5e9] border-l-[3px] border-[#2e7d32] text-[#1b5e20]',
-    'danger': 'bg-[#fdecea] border-l-[3px] border-[#c0392b] text-[#b71c1c]',
+    'info': 'bg-blue-50 text-blue-800 border-blue-200',
+    'success': 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    'warn': 'bg-amber-50 text-amber-800 border-amber-200',
+    'danger': 'bg-red-50 text-red-800 border-red-200',
+  };
+
+  const icons = {
+    'info': 'ℹ️',
+    'success': '✅',
+    'warn': '⚠️',
+    'danger': '🚨',
   };
 
   return (
-    <div className={`px-3.5 py-2 text-[13px] mb-3 border-l-[3px] ${variantClasses[variant]}`}>
+    <div className={`px-4 py-3 text-[13px] rounded-lg border mb-3 ${variantClasses[variant]} ${className}`}>
+      <span className="mr-2">{icons[variant]}</span>
       {children}
     </div>
   );
 };
 
 // Button component
-export const Button = ({ children, variant = 'primary', size = 'md', onClick, className = '', ...props }) => {
+export const Button = ({ variant = 'primary', size = 'md', children, className = '', ...props }) => {
   const variantClasses = {
-    'primary': 'bg-[#4a5e3a] text-white hover:bg-[#344228]',
-    'navy': 'bg-[#1a2d4a] text-white hover:bg-[#243d61]',
-    'saffron': 'bg-[#c8601a] text-white hover:bg-[#d97020]',
-    'red': 'bg-[#c0392b] text-white hover:bg-[#b71c1c]',
-    'out': 'bg-white text-[#4a5e3a] border-[1.5px] border-[#4a5e3a] hover:bg-[#f5f5f0]',
-    'out-navy': 'bg-white text-[#1a2d4a] border-[1.5px] border-[#1a2d4a] hover:bg-[#f5f5f0]',
-    'link': 'bg-none border-none text-[#1565c0] cursor-pointer p-0 underline',
+    'primary': 'bg-army-600 text-white hover:bg-army-700 shadow-sm',
+    'navy': 'bg-navy-600 text-white hover:bg-navy-700 shadow-sm',
+    'saffron': 'bg-saffron-600 text-white hover:bg-saffron-700 shadow-sm',
+    'red': 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
+    'green': 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm',
+    'out': 'bg-transparent text-slate-600 border border-slate-300 hover:bg-slate-50',
+    'out-navy': 'bg-transparent text-navy-600 border border-navy-300 hover:bg-navy-50',
   };
 
   const sizeClasses = {
-    'sm': 'px-2.5 py-1 text-[12px]',
-    'md': 'px-4 py-1.5 text-[13px]',
-    'lg': 'px-6 py-2 text-[14px]',
+    'sm': 'px-3 py-1.5 text-xs',
+    'md': 'px-4 py-2 text-sm',
+    'lg': 'px-6 py-3 text-base',
   };
 
   return (
     <button 
-      className={`font-semibold cursor-pointer border-none font-inherit transition-all duration-150 inline-flex items-center gap-1.5 leading-tight ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
-      onClick={onClick}
+      className={`inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       {...props}
     >
       {children}
