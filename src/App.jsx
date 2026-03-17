@@ -101,3 +101,152 @@ const LandingPage = ({ setPage }) => {
       </div>
       <div className="bg-[#344228] text-white/80 py-7">
         <div className="max-w-[1300px] mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div><div className="font-serif text-[15px] font-bold text-white mb-2">Agniveer — Agnipath</div><div className="text-[12px] text-white/60">Official portal of the Indian Army.</div></div>
+          <div><div className="text-[13px] font-bold text-white mb-2">Quick Links</div>{['Home', 'About', 'Apply', 'Results'].map(l => <div key={l} className="text-[12px] text-white/60 mb-1 cursor-pointer">{l}</div>)}</div>
+          <div><div className="text-[13px] font-bold text-white mb-2">Information</div>{['Eligibility', 'Standards', 'Documents', 'Salary'].map(l => <div key={l} className="text-[12px] text-white/60 mb-1 cursor-pointer">{l}</div>)}</div>
+          <div><div className="text-[13px] font-bold text-white mb-2">Support</div>{['Help Desk', 'Contact', 'Grievance', 'RTI'].map(l => <div key={l} className="text-[12px] text-white/60 mb-1 cursor-pointer">{l}</div>)}</div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+// Login Page Component
+const LoginPage = ({ mode, setPage }) => {
+  const [role, setRole] = useState('CANDIDATE');
+  const { login } = useAuth();
+  const roles = [{ k: 'CANDIDATE', l: 'Candidate' },{ k: 'SOLDIER', l: 'Soldier' },{ k: 'ADMIN', l: 'Admin' },{ k: 'TRAINER', l: 'Trainer' },{ k: 'DOCTOR', l: 'Doctor' }];
+  const names = { CANDIDATE: 'Aryan Sharma', SOLDIER: 'Rajveer Singh Chauhan', ADMIN: 'Maj. Ankit Verma', TRAINER: 'Cpt. Pradeep Kumar', DOCTOR: 'Dr. Sunita Rao' };
+  const dests = { CANDIDATE: 'candidate', SOLDIER: 'soldier', ADMIN: 'admin', TRAINER: 'trainer', DOCTOR: 'doctor' };
+
+  const handleLogin = async () => {
+    const result = await login({ role, name: names[role] });
+    if (result.success) setPage(dests[role]);
+  };
+
+  return (
+    <div className="bg-[#f5f5f0] min-h-[calc(100vh-116px)] py-10">
+      <div className="max-w-[500px] mx-auto px-4">
+        <div className="bg-[#344228] text-white px-5 py-3.5">
+          <div className="font-serif text-[18px] font-bold">{mode === 'login' ? 'Agniveer Portal Login' : 'New Registration — Agnipath 2025'}</div>
+          <div className="text-[12px] text-white/70 mt-0.5">Official Portal · Ministry of Defence</div>
+        </div>
+        <div className="bg-white border border-[#d0d0c8] p-5.5">
+          <div className="mb-4">
+            <div className="text-[11px] font-bold text-[#444] uppercase mb-2">Select Role</div>
+            <div className="flex gap-1.5 flex-wrap">
+              {roles.map(r => (
+                <button key={r.k} onClick={() => setRole(r.k)} className={`px-3.5 py-1.5 text-[13px] cursor-pointer border font-inherit ${role === r.k ? 'border-[#4a5e3a] bg-[#4a5e3a] text-white font-semibold' : 'border-[#d0d0c8] bg-white text-[#444]'}`}>{r.l}</button>
+              ))}
+            </div>
+          </div>
+          {mode === 'register' && <div className="mb-3.5"><label className="block text-[11px] font-bold text-[#444] mb-1 uppercase">Full Name</label><input className="w-full px-3 py-2 border border-[#d0d0c8] text-[13px]" placeholder="Enter full name" /></div>}
+          <div className="mb-3.5"><label className="block text-[11px] font-bold text-[#444] mb-1 uppercase">{mode === 'login' ? 'Username' : 'Email'}</label><input className="w-full px-3 py-2 border border-[#d0d0c8] text-[13px]" placeholder={mode === 'login' ? 'Enter username' : 'Enter email'} /></div>}
+          {mode === 'register' && <div className="grid grid-cols-2 gap-3.5 mb-3.5"><div><label className="block text-[11px] font-bold text-[#444] mb-1 uppercase">Mobile</label><input className="w-full px-3 py-2 border border-[#d0d0c8] text-[13px]" placeholder="10-digit" /></div><div><label className="block text-[11px] font-bold text-[#444] mb-1 uppercase">DOB</label><input className="w-full px-3 py-2 border border-[#d0d0c8] text-[13px]" type="date" /></div></div>}
+          <div className="mb-3.5"><label className="block text-[11px] font-bold text-[#444] mb-1 uppercase">Password</label><input className="w-full px-3 py-2 border border-[#d0d0c8] text-[13px]" type="password" placeholder="Enter password" /></div>}
+          <div className="bg-[#e3f2fd] text-[#0d47a1] text-[13px] px-3.5 py-2 mb-3"><strong>Demo Mode:</strong> Select any role and click {mode === 'login' ? 'Login' : 'Register'}</div>
+          <button className="w-full px-4 py-2.5 text-[14px] font-semibold bg-[#4a5e3a] text-white hover:bg-[#344228] border-none cursor-pointer" onClick={handleLogin}>{mode === 'login' ? 'Login to Portal' : 'Create Account'}</button>
+          <div className="text-center mt-3 text-[13px] text-[#777]">{mode === 'login' ? <>No account? <button className="text-[#1565c0] bg-none border-none cursor-pointer p-0 underline" onClick={() => setPage('register')}>Register here</button></> : <>Already? <button className="text-[#1565c0] bg-none border-none cursor-pointer p-0 underline" onClick={() => setPage('login')}>Login</button></>}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Admin Dashboard
+const AdminDashboard = ({ page, setPage, user, soldiers, battalions, applications, sosAlerts, updateSoldier, updateApplication, addSOSAlert, resolveSOS }) => {
+  const [editSoldier, setEditSoldier] = useState(null);
+  const [reviewApp, setReviewApp] = useState(null);
+  const [showSosTrigger, setShowSosTrigger] = useState(false);
+  const [savedMsg, setSavedMsg] = useState('');
+
+  const showSaved = (msg) => { setSavedMsg(msg); setTimeout(() => setSavedMsg(''), 3000); };
+  const avg = (fn) => Math.round(soldiers.reduce((a, s) => a + fn(s), 0) / soldiers.length * 10) / 10;
+  const activeSOS = sosAlerts.filter(s => s.status === 'active');
+  const pendingApps = applications.filter(a => a.status === 'Under Review').length;
+  const appCount = applications.filter(a => a.status === 'Under Review').length;
+  const sosCount = sosAlerts.filter(s => s.status === 'active').length;
+
+  const saveSoldier = (updated) => { updateSoldier(updated.id, updated); setEditSoldier(null); showSaved('Soldier details updated.'); };
+  const saveApplication = (updated) => { updateApplication(updated.id, updated); setReviewApp(null); showSaved('Application updated.'); };
+  const triggerSOS = (alert) => { addSOSAlert(alert); setShowSosTrigger(false); showSaved(`SOS Alert ${alert.id} triggered.`); };
+
+  const isBatPage = page.startsWith('bat_');
+  const isSolPage = page.startsWith('sol_');
+
+  // SOS Trigger Modal
+  const SOSTriggerModal = () => {
+    const [form, setForm] = useState({ type: 'Emergency', battalionId: 'all', message: '' });
+    const newId = 'SOS-' + String(Math.floor(Math.random() * 9000) + 1000);
+    return (
+      <Modal title="🚨 Trigger New SOS Alert" onClose={() => setShowSosTrigger(false)}
+        footer={<><Button variant="out" onClick={() => setShowSosTrigger(false)}>Cancel</Button><Button variant="red" onClick={() => { if (!form.message.trim()) return alert('Please enter message'); const bat = form.battalionId === 'all' ? null : parseInt(form.battalionId); const batName = form.battalionId === 'all' ? 'All Battalions' : battalions.find(b => b.id === parseInt(form.battalionId))?.name || '—'; const now = new Date(); const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ' hrs, ' + now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); triggerSOS({ id: newId, type: form.type, battalionId: bat, battalionName: batName, message: form.message, triggeredAt: timeStr, triggeredBy: user.name, status: 'active', resolvedAt: '' }); }}>Trigger Alert</Button></>}>
+        <Alert variant="danger">Warning: This will immediately notify all personnel.</Alert>
+        <FormRow cols={2}>
+          <Select label="Alert Type" value={form.type} onChange={(v) => setForm({ ...form, type: v })} options={['Emergency', 'Drill', 'Test']} />
+          <Select label="Target Unit" value={form.battalionId} onChange={(v) => setForm({ ...form, battalionId: v })} options={[{ value: 'all', label: 'All Battalions' }, ...battalions.map(b => ({ value: b.id, label: b.name }))]} />
+        </FormRow>
+        <Textarea label="Alert Message" value={form.message} onChange={(v) => setForm({ ...form, message: v })} placeholder="Describe the emergency..." rows={4} />
+      </Modal>
+    );
+  };
+
+  // Application Review Modal
+  const AppReviewModal = ({ app }) => {
+    const [form, setForm] = useState({ ...app });
+    const statuses = ['Under Review', 'Verified', 'Pending Docs', 'Selected', 'Rejected'];
+    return (
+      <Modal title={`Review Application — ${app.name}`} onClose={() => setReviewApp(null)} large
+        footer={<><Button variant="out" onClick={() => setReviewApp(null)}>Cancel</Button><Button variant="primary" onClick={() => saveApplication({ ...form, verifiedBy: user.name })}>Save Changes</Button></>}>
+        <Alert variant="info">Application ID: <strong>{app.id}</strong> · Submitted: {app.date}</Alert>
+        <FormRow cols={2}>
+          <Input label="Full Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <Input label="Date of Birth" type="date" value={form.dob} onChange={(e) => setForm({ ...form, dob: e.target.value })} />
+          <Input label="State" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
+          <Input label="Education" value={form.education} onChange={(e) => setForm({ ...form, education: e.target.value })} />
+          <Input label="Height (cm)" type="number" value={form.height} onChange={(e) => setForm({ ...form, height: e.target.value })} />
+          <Input label="Weight (kg)" type="number" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} />
+        </FormRow>
+        <Select label="Application Status" value={form.status} onChange={(v) => setForm({ ...form, status: v })} options={statuses} />
+        <Textarea label="Reviewer Notes" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="Add notes..." rows={4} />
+      </Modal>
+    );
+  };
+
+  // Soldier Detail Modal
+  const EditSoldierModal = ({ soldier }) => {
+    const [form, setForm] = useState({ ...soldier, scores: { ...soldier.scores } });
+    return (
+      <Modal title={`Edit Soldier — ${soldier.name}`} onClose={() => setEditSoldier(null)} large
+        footer={<><Button variant="out" onClick={() => setEditSoldier(null)}>Cancel</Button><Button variant="primary" onClick={() => saveSoldier(form)}>Save Changes</Button></>}>
+        <div className="font-bold text-[13px] text-[#1a2d4a] border-b border-[#d0d0c8] pb-2 mb-3">Personal Information</div>
+        <FormRow cols={2}>
+          <Input label="Full Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <Select label="Rank" value={form.rank} onChange={(v) => setForm({ ...form, rank: v })} options={['Sepoy', 'Lance Naik', 'Naik', 'Havildar']} />
+          <Input label="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+          <Input label="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+        </FormRow>
+        <div className="font-bold text-[13px] text-[#1a2d4a] border-b border-[#d0d0c8] pb-2 mb-3 mt-4">Training Scores</div>
+        <FormRow cols={3}>
+          <Input label="Physical" type="number" value={form.scores.physical} onChange={(e) => setForm({ ...form, scores: { ...form.scores, physical: parseInt(e.target.value) || 0 } })} />
+          <Input label="Weapons" type="number" value={form.scores.weapons} onChange={(e) => setForm({ ...form, scores: { ...form.scores, weapons: parseInt(e.target.value) || 0 } })} />
+          <Input label="Mental" type="number" value={form.scores.mental} onChange={(e) => setForm({ ...form, scores: { ...form.scores, mental: parseInt(e.target.value) || 0 } })} />
+          <Input label="Combat" type="number" value={form.scores.combat} onChange={(e) => setForm({ ...form, scores: { ...form.scores, combat: parseInt(e.target.value) || 0 } })} />
+          <Input label="Attendance" type="number" value={form.scores.attendance} onChange={(e) => setForm({ ...form, scores: { ...form.scores, attendance: parseInt(e.target.value) || 0 } })} />
+          <Input label="Discipline" type="number" value={form.scores.discipline} onChange={(e) => setForm({ ...form, scores: { ...form.scores, discipline: parseInt(e.target.value) || 0 } })} />
+        </FormRow>
+      </Modal>
+    );
+  };
+
+  const renderPage = () => {
+    // Admin Overview
+    if (page === 'admin') {
+      return (
+        <div className="p-5">
+          {savedMsg && <Alert variant="success" className="m-0 mb-3">{savedMsg}</Alert>}
+          
+          {/* Active SOS */}
+          {activeSOS.map(s => (
+            <div key={s.id} className="bg-[#fdecea] border border-[#ffcdd2] border-l-[4px] border-l-[#c0392b] p-3 flex items-center gap-3 mb-4">
+              <span className="text-[18px]">🚨</span>
