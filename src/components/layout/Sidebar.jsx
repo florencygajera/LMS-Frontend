@@ -1,114 +1,135 @@
-import { useState } from 'react';
-
-const Sidebar = ({ user, page, setPage, children }) => {
-  const sections = {
-    OVERVIEW: [
-      { k: 'admin', l: 'Dashboard', icon: '📊' },
-      { k: 'admin-sos', l: 'SOS Alerts', icon: '🚨' },
-      { k: 'admin-audit', l: 'Audit Log', icon: '🔐' },
-    ],
-    'AI & INTELLIGENCE': [
-      { k: 'admin-agniassist', l: 'AgniAssist AI', icon: '🤖' },
-      { k: 'admin-ml', l: 'ML Insights', icon: '📈' },
-    ],
-    RECRUITMENT: [
-      { k: 'admin-applications', l: 'Applications', icon: '📋', count: 5 },
-    ],
-    'BATTALION & SOLDIERS': [
-      { k: 'admin-battalions', l: 'All Battalions', icon: '🏛️' },
-      { k: 'admin-soldiers', l: 'All Soldiers', icon: '👥' },
-      { k: 'admin-rankings', l: 'Rankings', icon: '🏆' },
-    ],
-  };
-
-  const soldierLinks = [
+// Sidebar Configuration
+const sidebarSections = {
+  ADMIN: [
+    { section: 'OVERVIEW', items: [
+      { key: 'admin', icon: '📊', label: 'Dashboard' },
+      { key: 'admin-sos', icon: '🚨', label: 'SOS Alerts', count: null },
+      { key: 'admin-audit', icon: '🔐', label: 'Audit Log' }
+    ]},
+    { section: 'AI & INTELLIGENCE', items: [
+      { key: 'admin-agniassist', icon: '🤖', label: 'AgniAssist AI' },
+      { key: 'admin-ml', icon: '📈', label: 'ML Insights' }
+    ]},
+    { section: 'RECRUITMENT', items: [
+      { key: 'admin-applications', icon: '📋', label: 'Applications', count: 5 }
+    ]},
+    { section: 'BATTALION & SOLDIERS', items: [
+      { key: 'admin-battalions', icon: '🏛️', label: 'All Battalions' },
+      { key: 'admin-soldiers', icon: '👥', label: 'All Soldiers' },
+      { key: 'admin-rankings', icon: '🏆', label: 'Rankings' }
+    ]},
+  ],
+  SOLDIER: [
     { section: 'SOLDIER PORTAL', items: [
-      { k: 'soldier', l: 'Dashboard', icon: '🏠' },
-      { k: 'training', l: 'Training', icon: '💪' },
-      { k: 'schedule', l: 'Schedule', icon: '📅' },
-      { k: 'medical', l: 'Medical', icon: '🏥' },
-      { k: 'equipment', l: 'Equipment', icon: '🔧' },
-      { k: 'stipend', l: 'Stipend', icon: '💰' },
-      { k: 'soldier-ai', l: 'AgniAssist', icon: '🤖' },
-      { k: 'soldier-insights', l: 'AI Insights', icon: '📈' },
+      { key: 'soldier', icon: '🏠', label: 'Dashboard' },
+      { key: 'training', icon: '💪', label: 'Training' },
+      { key: 'schedule', icon: '📅', label: 'Schedule' },
+      { key: 'medical', icon: '🏥', label: 'Medical' },
+      { key: 'equipment', icon: '🔧', label: 'Equipment' },
+      { key: 'stipend', icon: '💰', label: 'Stipend' },
+      { key: 'soldier-ai', icon: '🤖', label: 'AgniAssist AI' },
+      { key: 'soldier-insights', icon: '📈', label: 'AI Insights' },
+      { key: 'soldier-docs', icon: '📄', label: 'Documents / OCR' }
     ]},
-  ];
-
-  const candidateLinks = [
+  ],
+  CANDIDATE: [
     { section: 'CANDIDATE PORTAL', items: [
-      { k: 'candidate', l: 'My Application', icon: '📋' },
-      { k: 'status', l: 'Track Status', icon: '🔍' },
-      { k: 'admitcard', l: 'Admit Card', icon: '🎫' },
+      { key: 'candidate', icon: '📋', label: 'My Application' },
+      { key: 'status', icon: '🔍', label: 'Track Status' },
+      { key: 'admitcard', icon: '🎫', label: 'Admit Card' }
     ]},
-  ];
+  ],
+  TRAINER: [
+    { section: 'TRAINER PORTAL', items: [
+      { key: 'trainer', icon: '📊', label: 'Dashboard' },
+      { key: 'upload', icon: '📤', label: 'Upload Data' }
+    ]},
+  ],
+  DOCTOR: [
+    { section: 'MEDICAL PORTAL', items: [
+      { key: 'doctor', icon: '🏥', label: 'Medical Records' },
+      { key: 'doctor-add', icon: '📋', label: 'Add Record' },
+      { key: 'doctor-stats', icon: '📊', label: 'Health Stats' }
+    ]},
+  ],
+};
 
-  const getLinks = () => {
-    if (user?.role === 'SOLDIER') return soldierLinks;
-    if (user?.role === 'CANDIDATE') return candidateLinks;
-    return Object.entries(sections).map(([section, items]) => ({ section, items }));
+export const Sidebar = ({ page, setPage, user, sosAlerts = [] }) => {
+  const sections = sidebarSections[user?.role] || sidebarSections.ADMIN;
+  const activeSOSCount = sosAlerts?.filter(s => s.status === 'active')?.length || 0;
+
+  const isActive = (key) => {
+    if (key === 'admin') return page === 'admin';
+    return page === key || page.startsWith(key + '_') ||
+      (key === 'admin-battalions' && (page.startsWith('bat_') || page === 'admin-battalions')) ||
+      (key === 'admin-soldiers' && (page.startsWith('sol_') || page === 'admin-soldiers'));
   };
 
-  const links = getLinks();
-
-  // Get force color based on role
-  const getForceColor = () => {
-    if (user?.role === 'ADMIN') return 'navy';
-    if (user?.role === 'SOLDIER') return 'army';
-    if (user?.role === 'TRAINER') return 'army';
-    if (user?.role === 'DOCTOR') return 'airforce';
-    return 'army';
+  // Get initials for avatar
+  const getInitials = (name) => {
+    if (!name) return 'AV';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
-
-  const force = getForceColor();
-  const forceColors = {
-    army: { bg: 'bg-army-600', border: 'border-army-500', text: 'text-army-600', hover: 'hover:bg-army-50' },
-    navy: { bg: 'bg-navy-600', border: 'border-navy-500', text: 'text-navy-600', hover: 'hover:bg-navy-50' },
-    airforce: { bg: 'bg-airforce-600', border: 'border-airforce-500', text: 'text-airforce-600', hover: 'hover:bg-airforce-50' },
-  };
-  const colors = forceColors[force] || forceColors.army;
 
   return (
-    <div className="w-56 bg-white border-r border-slate-200 flex flex-col h-full">
+    <div className="w-56 bg-[#0B0F19] border-r border-white/10 flex flex-col h-full">
       {/* User Info */}
-      <div className="p-4 border-b border-slate-200 bg-slate-50">
-        <div className="font-semibold text-slate-800 text-sm">{user?.name || 'User'}</div>
-        <div className="text-[11px] text-slate-500 font-mono mt-1">{user?.id || 'ID'}</div>
-        <div className="text-[11px] text-slate-500 mt-1">{user?.role || 'Role'}</div>
+      <div className="p-4 border-b border-white/10">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00C2FF] to-[#A855F7] flex items-center justify-center text-sm font-bold text-white">
+            {getInitials(user?.name)}
+          </div>
+          <div>
+            <div className="text-sm font-medium text-white truncate max-w-[140px]">{user?.name || 'User'}</div>
+            <div className="text-xs text-[#FF9933]">{user?.role || 'Guest'}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-white/40">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span>Online</span>
+        </div>
       </div>
 
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto py-2">
-        {links.map((sec, idx) => (
-          <div key={idx}>
-            <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              {sec.section}
+        {sections.map((section) => (
+          <div key={section.section} className="mb-4">
+            <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-white/30">
+              {section.section}
             </div>
-            {sec.items.map((item) => (
-              <div
-                key={item.k}
-                className={`mx-2 mb-0.5 px-3 py-2 rounded-lg text-[13px] cursor-pointer transition-all flex items-center gap-2 ${
-                  page === item.k || page.startsWith(item.k + '_')
-                    ? `${colors.bg} text-white shadow-sm`
-                    : `text-slate-600 ${colors.hover}`
+            {section.items.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => setPage(item.key)}
+                className={`w-full px-4 py-2.5 flex items-center gap-3 text-sm transition-all duration-200 border-l-2 ${
+                  isActive(item.key)
+                    ? 'bg-[#00C2FF]/10 text-[#00C2FF] border-[#00C2FF]'
+                    : 'text-white/60 border-transparent hover:bg-white/5 hover:text-white'
                 }`}
-                onClick={() => setPage(item.k)}
               >
-                <span>{item.icon}</span>
-                <span className="flex-1">{item.l}</span>
+                <span className="text-base">{item.icon}</span>
+                <span className="flex-1 text-left">{item.label}</span>
+                {item.key === 'admin-sos' && activeSOSCount > 0 && (
+                  <span className="px-2 py-0.5 text-xs font-bold bg-red-500 text-white rounded-full animate-pulse">
+                    {activeSOSCount}
+                  </span>
+                )}
                 {item.count && (
-                  <span className="bg-saffron-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                  <span className="px-2 py-0.5 text-xs font-bold bg-[#FF9933]/20 text-[#FF9933] rounded-full">
                     {item.count}
                   </span>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         ))}
       </div>
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-200 text-[10px] text-slate-400 text-center">
-        Agniveer LMS v1.0
+      <div className="p-4 border-t border-white/10">
+        <div className="text-xs text-white/30 text-center">
+          AGNIASSIST v2.0
+        </div>
       </div>
     </div>
   );
