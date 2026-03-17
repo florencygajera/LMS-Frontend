@@ -1,4 +1,4 @@
-// Card Components with Dark/Neon Theme
+// Card Components with Dark/Neon Theme - Export All Components
 
 // Stat Card Component
 export const StatCard = ({ label, value, icon, trend, trendValue, color = 'blue' }) => {
@@ -35,7 +35,7 @@ export const StatCard = ({ label, value, icon, trend, trendValue, color = 'blue'
 };
 
 // Panel/Card Component
-export const Card = ({ children, className = '', title, subtitle, action, icon }) => {
+export const Panel = ({ children, className = '', title, subtitle, action, icon }) => {
   return (
     <div className={`glass rounded-xl ${className}`}>
       {(title || action) && (
@@ -52,6 +52,31 @@ export const Card = ({ children, className = '', title, subtitle, action, icon }
       )}
       <div className="p-5">
         {children}
+      </div>
+    </div>
+  );
+};
+
+// Alias Panel as Card for compatibility
+export const Card = Panel;
+
+// ScoreBar Component
+export const ScoreBar = ({ value, max = 100, showLabel = true }) => {
+  const percentage = Math.min(100, Math.max(0, (value / max) * 100));
+  
+  return (
+    <div className="w-full">
+      {showLabel && (
+        <div className="flex justify-between text-xs text-white/50 mb-1">
+          <span>Progress</span>
+          <span>{Math.round(percentage)}%</span>
+        </div>
+      )}
+      <div className="w-full bg-white/10 rounded-full h-2">
+        <div 
+          className="h-full bg-gradient-to-r from-[#00C2FF] to-[#00FFE5] rounded-full transition-all duration-500"
+          style={{ width: `${percentage}%` }}
+        />
       </div>
     </div>
   );
@@ -78,6 +103,43 @@ export const Badge = ({ children, color = 'default', size = 'md' }) => {
     <span className={`inline-flex items-center font-medium rounded-full border ${colorClasses[color]} ${sizeClasses[size]}`}>
       {children}
     </span>
+  );
+};
+
+// Alert Component
+export const Alert = ({ children, variant = 'info' }) => {
+  const variantClasses = {
+    info: 'bg-[#00C2FF]/10 border-[#00C2FF]/30 text-[#00C2FF]',
+    success: 'bg-green-500/10 border-green-500/30 text-green-400',
+    warning: 'bg-[#FF9933]/10 border-[#FF9933]/30 text-[#FF9933]',
+    danger: 'bg-red-500/10 border-red-500/30 text-red-400',
+  };
+
+  return (
+    <div className={`p-4 rounded-lg border ${variantClasses[variant]}`}>
+      {children}
+    </div>
+  );
+};
+
+// Button Component
+export const Button = ({ children, variant = 'primary', onClick, className = '', type = 'button' }) => {
+  const variantClasses = {
+    primary: 'bg-gradient-to-r from-[#00C2FF] to-[#00FFE5] text-[#0B0F19] hover:shadow-lg hover:shadow-[#00C2FF]/30',
+    secondary: 'bg-white/10 text-white border border-white/20 hover:bg-white/20',
+    danger: 'bg-red-500/20 text-red-400 hover:bg-red-500/30',
+    saffron: 'bg-gradient-to-r from-[#FF9933] to-[#FF7F00] text-white hover:shadow-lg hover:shadow-[#FF9933]/30',
+    out: 'bg-transparent text-white border border-white/20 hover:bg-white/10',
+  };
+
+  return (
+    <button 
+      type={type}
+      onClick={onClick}
+      className={`px-4 py-2 rounded-lg font-medium transition-all ${variantClasses[variant]} ${className}`}
+    >
+      {children}
+    </button>
   );
 };
 
@@ -137,4 +199,4 @@ export const ScoreBadge = ({ score }) => {
   );
 };
 
-export default { StatCard, Card, Badge, ProgressBar, ScoreBadge };
+export default { StatCard, Card, Badge, ProgressBar, ScoreBadge, Panel, ScoreBar, Alert, Button };

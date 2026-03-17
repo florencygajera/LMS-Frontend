@@ -3,22 +3,10 @@ import { MainLayout } from './components/layout';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { StatCard, Card, Badge, ProgressBar, ScoreBadge } from './components/ui/Card';
-import { Modal } from './components/ui/Modal';
 import { Table } from './components/ui/Table';
-import { Input, Select, Textarea } from './components/ui/FormComponents';
-import { useAppData, overall, grade, fillCls, scoreColor, getInsights } from './context/AppDataContext';
+import { useAppData, overall, scoreColor } from './context/AppDataContext';
 
-// Login Component
-const Login = ({ setPage, setUser }) => (
-  <LoginPage mode="login" setPage={setPage} setUser={setUser} />
-);
-
-// Register Component
-const Register = ({ setPage, setUser }) => (
-  <LoginPage mode="register" setPage={setPage} setUser={setUser} />
-);
-
-// Admin Dashboard
+// Admin Dashboard Component
 const AdminDashboard = ({ page, setPage, soldiers, battalions, applications, sosAlerts }) => {
   const activeSOS = sosAlerts?.filter(s => s.status === 'active') || [];
   const avg = (arr, fn) => arr.length ? Math.round(arr.reduce((a, b) => a + fn(b), 0) / arr.length * 10) / 10 : 0;
@@ -27,7 +15,6 @@ const AdminDashboard = ({ page, setPage, soldiers, battalions, applications, sos
 
   return (
     <div className="space-y-6">
-      {/* Active SOS Alerts */}
       {activeSOS.map(s => (
         <div key={s.id} className="glass rounded-xl p-4 border-l-4 border-red-500 bg-red-500/10 flex items-center gap-4">
           <span className="text-2xl">🚨</span>
@@ -41,24 +28,20 @@ const AdminDashboard = ({ page, setPage, soldiers, battalions, applications, sos
         </div>
       ))}
 
-      {/* Page Title */}
       <div>
         <h1 className="text-2xl font-bold text-white">Command Overview</h1>
         <p className="text-white/50">Agnipath Scheme · Real-time Dashboard</p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <StatCard label="Total Agniveers" value={soldiers.length} icon="👥" color="blue" />
         <StatCard label="Active Duty" value={soldiers.filter(s => s.status === 'active').length} icon="💪" color="green" />
-        <StatCard label="Avg. Performance" value={avgScore} icon="📊" color="purple" trend="up" trendValue="+2.3%" />
+        <StatCard label="Avg. Performance" value={avgScore} icon="📊" color="purple" />
         <StatCard label="Active Battalions" value={battalions.length} icon="🏛️" color="orange" />
         <StatCard label="Pending Applications" value={pendingApps} icon="📋" color="red" />
       </div>
 
-      {/* Content Grid */}
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Battalion Performance */}
         <Card title="Battalion Performance" icon="🏛️" action={
           <button onClick={() => setPage('admin-battalions')} className="text-xs text-[#00C2FF] hover:underline">View All</button>
         }>
@@ -90,7 +73,6 @@ const AdminDashboard = ({ page, setPage, soldiers, battalions, applications, sos
           </div>
         </Card>
 
-        {/* Top Performers */}
         <Card title="Top 5 Performers" icon="🏆" subtitle="This month">
           <Table
             headers={['#', 'Soldier', 'Battalion', 'Score']}
@@ -115,89 +97,9 @@ const AdminDashboard = ({ page, setPage, soldiers, battalions, applications, sos
   );
 };
 
-// Main App Component
-function App() {
-  const [page, setPage] = useState('home');
-  const [user, setUser] = useState(null);
-  const { soldiers, battalions, applications, sosAlerts, setSosAlerts, setSoldiers, setBattalions, setApplications } = useAppData();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [page]);
-
-  const adminPages = ['admin', 'admin-battalions', 'admin-soldiers', 'admin-rankings', 'admin-applications', 'admin-sos', 'admin-agniassist', 'admin-ml', 'admin-audit'];
-  const isAdmin = adminPages.includes(page) || page.startsWith('bat_') || page.startsWith('sol_');
-
-  const showSidebar = user && (page !== 'home' && page !== 'login' && page !== 'register');
-
-  // Render based on page
-  const renderContent = () => {
-    switch (page) {
-      case 'home':
-      case 'about':
-      case 'recruitment':
-      case 'results':
-        return <LandingPage setPage={setPage} />;
-      
-      case 'login':
-        return <Login setPage={setPage} setUser={setUser} />;
-      
-      case 'register':
-        return <Register setPage={setPage} setUser={setUser} />;
-      
-      case 'candidate':
-      case 'status':
-      case 'admitcard':
-        return <CandidatePortal page={page} setPage={setPage} />;
-      
-      case 'soldier':
-      case 'training':
-      case 'schedule':
-      case 'medical':
-      case 'equipment':
-      case 'stipend':
-      case 'soldier-ai':
-      case 'soldier-insights':
-      case 'soldier-docs':
-        return <SoldierPortal page={page} setPage={setPage} soldiers={soldiers} battalions={battalions} />;
-      
-      case isAdmin:
-        return <AdminDashboard page={page} setPage={setPage} soldiers={soldiers} battalions={battalions} applications={applications} sosAlerts={sosAlerts} />;
-      
-      case 'trainer':
-      case 'upload':
-        return <TrainerPortal page={page} setPage={setPage} soldiers={soldiers} battalions={battalions} />;
-      
-      case 'doctor':
-        return <DoctorPortal />;
-      
-      default:
-        return <LandingPage setPage={setPage} />;
-    }
-  };
-
-  // Public pages (no layout)
-  if (['home', 'login', 'register'].includes(page)) {
-    return renderContent();
-  }
-
-  return (
-    <MainLayout 
-      page={page} 
-      setPage={setPage} 
-      user={user} 
-      setUser={setUser}
-      sosAlerts={sosAlerts}
-      showSidebar={showSidebar}
-    >
-      {renderContent()}
-    </MainLayout>
-  );
-}
-
-// Placeholder components
+// Placeholder Components
 const CandidatePortal = ({ page, setPage }) => (
-  <div className="text-white">
+  <div className="text-white p-6">
     <h1 className="text-2xl font-bold mb-4">Candidate Portal</h1>
     <p className="text-white/60">Welcome to the Candidate Portal</p>
   </div>
@@ -225,17 +127,79 @@ const SoldierPortal = ({ page, setPage, soldiers, battalions }) => {
 };
 
 const TrainerPortal = ({ page, setPage }) => (
-  <div className="text-white">
+  <div className="text-white p-6">
     <h1 className="text-2xl font-bold mb-4">Trainer Portal</h1>
     <p className="text-white/60">Trainer dashboard coming soon</p>
   </div>
 );
 
 const DoctorPortal = () => (
-  <div className="text-white">
+  <div className="text-white p-6">
     <h1 className="text-2xl font-bold mb-4">Medical Portal</h1>
     <p className="text-white/60">Medical dashboard coming soon</p>
   </div>
 );
+
+// Main App
+function App() {
+  const [page, setPage] = useState('home');
+  const [user, setUser] = useState(null);
+  const { soldiers, battalions, applications, sosAlerts } = useAppData();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+
+  const adminPages = ['admin', 'admin-battalions', 'admin-soldiers', 'admin-rankings', 'admin-applications', 'admin-sos', 'admin-agniassist', 'admin-ml', 'admin-audit'];
+  const isAdmin = adminPages.includes(page) || page.startsWith('bat_') || page.startsWith('sol_');
+  const showSidebar = user && !['home', 'login', 'register'].includes(page);
+
+  const renderContent = () => {
+    switch (page) {
+      case 'home':
+      case 'about':
+      case 'recruitment':
+      case 'results':
+        return <LandingPage setPage={setPage} />;
+      case 'login':
+        return <LoginPage mode="login" setPage={setPage} setUser={setUser} />;
+      case 'register':
+        return <LoginPage mode="register" setPage={setPage} setUser={setUser} />;
+      case 'candidate':
+      case 'status':
+      case 'admitcard':
+        return <CandidatePortal page={page} setPage={setPage} />;
+      case 'soldier':
+      case 'training':
+      case 'schedule':
+      case 'medical':
+      case 'equipment':
+      case 'stipend':
+      case 'soldier-ai':
+      case 'soldier-insights':
+      case 'soldier-docs':
+        return <SoldierPortal page={page} setPage={setPage} soldiers={soldiers} battalions={battalions} />;
+      case isAdmin:
+        return <AdminDashboard page={page} setPage={setPage} soldiers={soldiers} battalions={battalions} applications={applications} sosAlerts={sosAlerts} />;
+      case 'trainer':
+      case 'upload':
+        return <TrainerPortal page={page} setPage={setPage} />;
+      case 'doctor':
+        return <DoctorPortal />;
+      default:
+        return <LandingPage setPage={setPage} />;
+    }
+  };
+
+  if (['home', 'login', 'register'].includes(page)) {
+    return renderContent();
+  }
+
+  return (
+    <MainLayout page={page} setPage={setPage} user={user} setUser={setUser} sosAlerts={sosAlerts} showSidebar={showSidebar}>
+      {renderContent()}
+    </MainLayout>
+  );
+}
 
 export default App;
