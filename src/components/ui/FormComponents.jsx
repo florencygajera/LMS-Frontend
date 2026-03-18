@@ -78,4 +78,3 @@ export const FormRow = ({ children, className = '' }) => {
 };
 
 export { Input, Select, Textarea, FormRow };
-export default { Input, Select, Textarea, FormRow };

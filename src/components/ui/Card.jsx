@@ -200,4 +200,3 @@ export const ScoreBadge = ({ score }) => {
 };
 
 export { StatCard, Card, Badge, ProgressBar, ScoreBadge, Panel, ScoreBar, Alert, Button };
-export default { StatCard, Card, Badge, ProgressBar, ScoreBadge, Panel, ScoreBar, Alert, Button };

@@ -96,4 +96,3 @@ export const SiteHeader = ({ onHome, force = 'army' }) => {
 };
 
 export { GovStrip, SiteHeader };
-export default { GovStrip, SiteHeader };
