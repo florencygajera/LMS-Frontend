@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser } from '../services/api';
+import { authAPI } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await loginUser(credentials);
+      const response = await authAPI.login(credentials);
       const { token: newToken, user: userData } = response;
       
       localStorage.setItem('token', newToken);
