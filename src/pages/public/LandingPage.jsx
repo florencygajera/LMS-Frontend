@@ -1,23 +1,11 @@
-import React from 'react';
-import { Card, Badge } from '../../components/ui/Card';
+﻿import React from 'react';
 
 export const LandingPage = ({ onNavigate }) => {
-  const notices = [
-    { text: 'Agnipath Recruitment Rally 2025 — Online applications open till 31 March 2025', date: '10 Mar 2025', isNew: true },
-    { text: 'Physical Fitness Test date for Batch 2025-A — 15 April 2025', date: '08 Mar 2025', isNew: true },
-    { text: 'March stipend disbursed for all active Agniveers', date: '28 Feb 2025', isNew: false },
-    { text: 'New training module: Advanced Weapons Handling from April 2025', date: '25 Feb 2025', isNew: false },
-    { text: 'Annual medical examinations scheduled for April–May 2025', date: '20 Feb 2025', isNew: false },
-    { text: 'February 2025 performance rankings now published on portal', date: '15 Feb 2025', isNew: false }
-  ];
-
-  const features = [
-    { icon: '📋', title: 'Online Application', desc: 'Apply for Agnipath recruitment digitally. Upload documents and track status in real time.' },
-    { icon: '🎫', title: 'Admit Card', desc: 'Download hall ticket post verification. All exam centre details included.' },
-    { icon: '💪', title: 'Training Tracking', desc: 'Track physical, weapons, mental, and combat performance throughout training.' },
-    { icon: '📊', title: 'Performance Analytics', desc: 'Scores, rankings, strengths, weaknesses, and personalised improvement plans.' },
-    { icon: '🏥', title: 'Medical Records', desc: 'Secure health history with restricted doctor-only access controls.' },
-    { icon: '💰', title: 'Stipend Portal', desc: 'Monthly pay slips, deductions, and Seva Nidhi fund accumulation tracking.' }
+  const navItems = [
+    { key: 'home', label: 'Home' },
+    { key: 'about', label: 'About Agnipath' },
+    { key: 'recruitment', label: 'Recruitment' },
+    { key: 'results', label: 'Results' },
   ];
 
   const stats = [
@@ -25,182 +13,111 @@ export const LandingPage = ({ onNavigate }) => {
     { number: '8,400+', label: 'Active Agniveers' },
     { number: '4', label: 'Force Types' },
     { number: '124', label: 'Training Centres' },
-    { number: '91%', label: 'Pass Rate 2024' }
+    { number: '91%', label: 'Pass Rate 2024' },
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-[#1a3a5c] to-[#0B0F19] py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap items-center gap-10">
-            <div className="flex-1 min-w-[280px]">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-12 h-0.5 bg-[#FFB800]" />
-                <span className="text-xs tracking-[3px] uppercase text-white/60">Indian Army — Agnipath Scheme</span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-                Agniveer<br />
-                <span className="text-[#FFB800]">Official Portal</span><br />
-                Agnipath Scheme 2025
-              </h1>
-              <p className="text-white/70 text-lg mb-6 max-w-xl">
-                Complete digital platform managing Agnipath scheme — recruitment, training, medical, performance analytics, and stipend for all serving Agniveers.
+    <div className="relative min-h-screen overflow-hidden bg-[#13110f] text-white">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://images.pexels.com/photos/163443/soldiers-army-obstacle-course-attack-163443.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-black/75" />
+
+      <header className="relative z-20">
+        <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-4 py-4 md:px-8">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-[#d94f10] text-xl font-bold shadow-lg">
+              <svg
+                viewBox="0 0 24 24"
+                className="h-7 w-7 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+              >
+                <path d="M12 3L5 6v6c0 5 3 8 7 9 4-1 7-4 7-9V6l-7-3z" />
+                <path d="M12 6v12" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">Agniveer</h1>
+              <p className="text-xs text-white/85 md:text-sm">
+                Agnipath Scheme · Indian Army · Ministry of Defence
               </p>
-              <div className="flex gap-3 flex-wrap">
-                <button 
-                  onClick={() => onNavigate('register')}
-                  className="px-6 py-3 bg-[#FFB800] text-black font-semibold rounded-lg hover:bg-[#FFB800]/80 transition-colors"
-                >
-                  Apply Now
-                </button>
-                <button 
-                  onClick={() => onNavigate('login')}
-                  className="px-6 py-3 glass text-white rounded-lg hover:bg-white/10 transition-colors border border-white/20"
-                >
-                  Login to Portal
-                </button>
-              </div>
-            </div>
-            
-            <div className="w-[190px] h-[190px] rounded-full border border-white/15 flex items-center justify-center">
-              <div className="w-[150px] h-[150px] rounded-full border border-white/10 bg-white/5 flex flex-col items-center justify-center">
-                <div className="text-5xl mb-2">🛡️</div>
-                <div className="text-sm font-bold text-white">Indian Army</div>
-                <div className="text-[10px] text-white/50 tracking-widest uppercase">Service Before Self</div>
-              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Stats Strip */}
-      <div className="bg-[#1a2d4a] py-6 border-t-4 border-[#FFB800]">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-around gap-6 flex-wrap">
-            {stats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="text-2xl font-bold text-[#FFB800]">{stat.number}</div>
-                <div className="text-xs text-white/60 uppercase tracking-wider mt-1">{stat.label}</div>
-              </div>
+          <nav className="hidden items-center gap-10 text-sm font-semibold text-white/95 lg:flex">
+            {navItems.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => onNavigate(item.key)}
+                className="transition-colors hover:text-[#ffd28b]"
+              >
+                {item.label}
+              </button>
             ))}
-          </div>
-        </div>
-      </div>
+          </nav>
 
-      {/* Main Content */}
-      <div className="bg-[#0B0F19] py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10">
-            {/* Notices */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs tracking-[3px] uppercase text-[#FFB800] font-semibold">Official Notices</span>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-6 border-l-4 border-[#FFB800] pl-4">
-                Announcements
-              </h2>
-              <div className="space-y-4">
-                {notices.map((notice, i) => (
-                  <div key={i} className="flex gap-3 py-3 border-b border-white/10 last:border-0">
-                    <div className="w-2 h-2 rounded-full bg-[#FFB800] mt-2 flex-shrink-0" />
-                    <div>
-                      <p className="text-white/80 text-sm cursor-pointer hover:text-[#00C2FF] transition-colors">
-                        {notice.text}
-                        {notice.isNew && (
-                          <span className="ml-2 text-[10px] font-bold bg-red-500 text-white px-1.5 py-0.5 rounded">NEW</span>
-                        )}
-                      </p>
-                      <p className="text-xs text-white/50 mt-1">{notice.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Features */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs tracking-[3px] uppercase text-[#FFB800] font-semibold">Platform Features</span>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-6 border-l-4 border-[#FFB800] pl-4">
-                What You Can Do
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {features.map((feature, i) => (
-                  <div key={i} className="glass rounded-xl p-4 border-t-4 border-[#00C2FF]">
-                    <div className="text-2xl mb-2">{feature.icon}</div>
-                    <div className="font-semibold text-white mb-1">{feature.title}</div>
-                    <p className="text-xs text-white/60 leading-relaxed">{feature.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="bg-[#1a2d4a] py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center flex-wrap gap-4">
-            <div>
-              <h3 className="text-xl font-bold text-white">Ready to serve the nation?</h3>
-              <p className="text-white/70 text-sm mt-1">Agnipath Batch 2025 open. Last date: 31 March 2025.</p>
-            </div>
-            <button 
-              onClick={() => onNavigate('register')}
-              className="px-6 py-3 bg-[#FFB800] text-black font-semibold rounded-lg hover:bg-[#FFB800]/80 transition-colors"
+          <div className="hidden items-center gap-3 md:flex">
+            <button
+              onClick={() => onNavigate('login')}
+              className="rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-[#1d1d1d] transition-colors hover:bg-white/90"
             >
-              Start Application
+              Login to Portal
+            </button>
+            <button
+              onClick={() => onNavigate('register')}
+              className="rounded-md bg-[#d94f10] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#bf430d]"
+            >
+              Apply Now
             </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Footer */}
-      <div className="bg-[#1a3a5c] py-10 text-white/80">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h4 className="font-bold text-white mb-3">Agniveer — Agnipath</h4>
-              <p className="text-xs leading-relaxed">
-                Official portal of the Indian Army for managing Agnipath scheme. Ministry of Defence, Govt. of India.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-3 text-sm">Quick Links</h4>
-              <ul className="text-xs space-y-2">
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('home')}>Home</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('about')}>About Agnipath</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('recruitment')}>Apply Now</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('results')}>Results</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-3 text-sm">Information</h4>
-              <ul className="text-xs space-y-2">
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('eligibility')}>Eligibility Criteria</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('physical-standards')}>Physical Standards</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('documents-required')}>Documents Required</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('salary-benefits')}>Salary & Benefits</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-3 text-sm">Support</h4>
-              <ul className="text-xs space-y-2">
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('faq')}>FAQ</li>
-                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('contact')}>Contact Us</li>
-                <li className="cursor-pointer hover:text-white">Grievance Portal</li>
-                <li className="cursor-pointer hover:text-white">Privacy Policy</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 mt-8 pt-6 text-center text-xs text-white/45">
-            © 2025 Agniveer — Agnipath Scheme · Ministry of Defence, Government of India · All Rights Reserved
-          </div>
+      <main className="relative z-10 flex min-h-[calc(100vh-88px)] flex-col items-center justify-center px-4 pb-52 pt-16 text-center md:pb-44">
+        <h2 className="max-w-[920px] text-4xl font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-2xl md:text-6xl lg:text-7xl">
+          Agniveer Official Portal Agnipath Scheme 2025
+        </h2>
+
+        <p className="mt-6 max-w-4xl text-lg text-white/95 md:text-3xl">
+          Complete digital platform managing Agnipath scheme - recruitment, training, medical,
+          performance analytics, and stipend for all serving Agniveers.
+        </p>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <button
+            onClick={() => onNavigate('login')}
+            className="rounded-md bg-white px-7 py-3 text-lg font-semibold text-[#1f1f1f] transition-colors hover:bg-white/90"
+          >
+            Login to Portal
+          </button>
+          <button
+            onClick={() => onNavigate('register')}
+            className="rounded-md bg-[#d94f10] px-7 py-3 text-lg font-semibold text-white transition-colors hover:bg-[#bf430d]"
+          >
+            Apply Now
+          </button>
         </div>
-      </div>
+      </main>
+
+      <section className="absolute bottom-6 left-0 z-20 w-full px-4 md:bottom-8 md:px-8">
+        <div className="mx-auto grid w-full max-w-[1220px] gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-3xl border border-white/20 bg-black/35 px-6 py-7 text-center shadow-2xl backdrop-blur-md"
+            >
+              <div className="text-4xl font-extrabold text-[#ffc72c]">{stat.number}</div>
+              <div className="mt-2 text-2xl text-white/90">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

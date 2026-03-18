@@ -78,6 +78,11 @@ function App() {
 
   // Render content based on page
   const renderContent = () => {
+    // Standalone hero landing page (without app chrome)
+    if (!user && page === 'home') {
+      return <LandingPage onNavigate={setPage} />;
+    }
+
     // For logged in users, use MainLayout with sidebar
     if (user) {
       return (
