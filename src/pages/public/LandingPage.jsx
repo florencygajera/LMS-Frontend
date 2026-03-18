@@ -171,26 +171,26 @@ export const LandingPage = ({ onNavigate }) => {
             <div>
               <h4 className="font-bold text-white mb-3 text-sm">Quick Links</h4>
               <ul className="text-xs space-y-2">
-                <li className="cursor-pointer hover:text-white">Home</li>
-                <li className="cursor-pointer hover:text-white">About Agnipath</li>
-                <li className="cursor-pointer hover:text-white">Apply Now</li>
-                <li className="cursor-pointer hover:text-white">Results</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('home')}>Home</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('about')}>About Agnipath</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('recruitment')}>Apply Now</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('results')}>Results</li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-white mb-3 text-sm">Information</h4>
               <ul className="text-xs space-y-2">
-                <li className="cursor-pointer hover:text-white">Eligibility Criteria</li>
-                <li className="cursor-pointer hover:text-white">Physical Standards</li>
-                <li className="cursor-pointer hover:text-white">Documents Required</li>
-                <li className="cursor-pointer hover:text-white">Salary & Benefits</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('eligibility')}>Eligibility Criteria</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('physical-standards')}>Physical Standards</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('documents-required')}>Documents Required</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('salary-benefits')}>Salary & Benefits</li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-white mb-3 text-sm">Support</h4>
               <ul className="text-xs space-y-2">
-                <li className="cursor-pointer hover:text-white">Help Desk</li>
-                <li className="cursor-pointer hover:text-white">Contact Us</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('faq')}>FAQ</li>
+                <li className="cursor-pointer hover:text-white" onClick={() => onNavigate('contact')}>Contact Us</li>
                 <li className="cursor-pointer hover:text-white">Grievance Portal</li>
                 <li className="cursor-pointer hover:text-white">Privacy Policy</li>
               </ul>

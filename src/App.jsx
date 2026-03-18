@@ -39,6 +39,16 @@ function App() {
   // Handlers
   const saveSoldier = (updated) => {
     setSoldiers(prev => prev.map(s => s.id === updated.id ? updated : s));
+    setEditSoldier(null);
+    showSaved('Soldier details updated successfully.');
+  };
+
+  const saveBattalion = (updated) => {
+    setBattalions(prev => prev.map(b => b.id === updated.id ? updated : b));
+    setEditBattalion(null);
+    showSaved('Battalion details updated successfully.');
+  };
+
   const saveApplication = (updated) => {
     setApplications(prev => prev.map(a => a.id === updated.id ? updated : a));
     setReviewApp(null);
@@ -62,11 +72,88 @@ function App() {
   const adminPages = ['admin', 'admin-battalions', 'admin-soldiers', 'admin-rankings', 'admin-applications', 'admin-sos', 'admin-agniassist', 'admin-ml', 'admin-audit'];
   const isAdmin = adminPages.includes(page) || page.startsWith('bat_') || page.startsWith('sol_');
 
+  // Public pages that should show header/navbar but no sidebar
+  const publicPages = ['home', 'about', 'recruitment', 'results', 'eligibility', 'physical-standards', 'documents-required', 'salary-benefits', 'faq', 'contact', 'login', 'register'];
+  const isPublicPage = publicPages.includes(page);
+
   // Render content based on page
   const renderContent = () => {
+    // For logged in users, use MainLayout with sidebar
+    if (user) {
+      return (
+        <MainLayout 
+          page={page} 
+          setPage={setPage} 
+          user={user} 
+          setUser={(u) => { setUser(u); if (!u) setPage('home'); }}
+          sosAlerts={sosAlerts}
+          showSidebar={true}
+        >
+          {renderPageContent()}
+        </MainLayout>
+      );
+    }
+
+    // For public pages, use MainLayout without sidebar
+    if (isPublicPage) {
+      return (
+        <MainLayout 
+          page={page} 
+          setPage={setPage} 
+          user={user} 
+          setUser={(u) => { setUser(u); if (!u) setPage('home'); }}
+          showSidebar={false}
+        >
+          {renderPageContent()}
+        </MainLayout>
+      );
+    }
+
+    // Default fallback
+    return renderPageContent();
+  };
+
+  // Render the actual page content
+  const renderPageContent = () => {
     // Public pages
     if (page === 'home') {
       return <LandingPage onNavigate={setPage} />;
+    }
+
+    if (page === 'about') {
+      return <AboutPage onNavigate={setPage} />;
+    }
+
+    if (page === 'recruitment') {
+      return <RecruitmentPage onNavigate={setPage} />;
+    }
+
+    if (page === 'results') {
+      return <ResultsPage onNavigate={setPage} />;
+    }
+
+    if (page === 'eligibility') {
+      return <EligibilityPage onNavigate={setPage} />;
+    }
+
+    if (page === 'physical-standards') {
+      return <PhysicalStandardsPage onNavigate={setPage} />;
+    }
+
+    if (page === 'documents-required') {
+      return <DocumentsRequiredPage onNavigate={setPage} />;
+    }
+
+    if (page === 'salary-benefits') {
+      return <SalaryBenefitsPage onNavigate={setPage} />;
+    }
+
+    if (page === 'faq') {
+      return <FAQPage onNavigate={setPage} />;
+    }
+
+    if (page === 'contact') {
+      return <ContactPage onNavigate={setPage} />;
     }
 
     if (page === 'login' || page === 'register') {
@@ -179,33 +266,16 @@ function App() {
     </>
   );
 
-  // If not logged in and on public page, show without layout
-  if (!user && (page === 'home' || page === 'login' || page === 'register')) {
-    return (
-      <>
-        {renderContent()}
-        {renderModals()}
-      </>
-    );
-  }
-
-  // Otherwise use MainLayout
   return (
-    <MainLayout 
-      page={page} 
-      setPage={setPage} 
-      user={user} 
-      setUser={(u) => { setUser(u); if (!u) setPage('home'); }}
-      sosAlerts={sosAlerts}
-    >
+    <div className="min-h-screen">
+      {renderContent()}
+      {renderModals()}
       {savedMsg && (
-        <div className="fixed top-4 right-4 z-50 glass px-6 py-3 rounded-lg border border-[#00FF88]/30 bg-[#00FF88]/20 text-[#00FF88]">
+        <div className="fixed bottom-4 right-4 bg-[#00FF88] text-black px-6 py-3 rounded-lg font-semibold shadow-lg z-50">
           ✓ {savedMsg}
         </div>
       )}
-      {renderContent()}
-      {renderModals()}
-    </MainLayout>
+    </div>
   );
 }
 

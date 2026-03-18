@@ -35,7 +35,9 @@ const navItems = {
   public: [
     { key: 'home', label: 'Home' },
     { key: 'about', label: 'About Agnipath' },
-    { key: 'recruitment', label: 'Recruitment' },
+    { key: 'recruitment', label: 'Apply Now' },
+    { key: 'eligibility', label: 'Eligibility' },
+    { key: 'physical-standards', label: 'Physical Standards' },
     { key: 'results', label: 'Results' },
   ],
   CANDIDATE: [
