@@ -71,4 +71,5 @@ export const TableSelect = ({ value, onChange, options, className = '' }) => {
   );
 };
 
+export { Table, SearchBar, TableSelect };
 export default { Table, SearchBar, TableSelect };
