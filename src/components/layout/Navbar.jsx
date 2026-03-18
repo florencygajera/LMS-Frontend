@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // Ticker Component
-const Ticker = () => {
+export const Ticker = () => {
   const items = [
     'Agnipath Recruitment Batch 2025 — Applications Open Till 31 March 2025',
     'Physical Fitness Test: 15 April 2025 at all designated rally grounds',
@@ -142,4 +142,3 @@ export const Navbar = ({ page, setPage, user, setUser }) => {
   );
 };
 
-export default Navbar;

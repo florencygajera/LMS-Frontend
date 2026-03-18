@@ -1,22 +1,62 @@
-const Modal = ({ title, onClose, children, footer, large }) => {
+import { useState, useEffect } from 'react';
+
+// Modal Component with Dark Theme
+
+export const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+    } else {
+      setTimeout(() => setIsVisible(false), 200);
+    }
+  }, [isOpen]);
+
+  if (!isVisible) return null;
+
+  const sizeClasses = {
+    sm: 'max-w-md',
+    md: 'max-w-2xl',
+    lg: 'max-w-4xl',
+    xl: 'max-w-6xl',
+  };
+
   return (
     <div 
-      className="fixed inset-0 bg-black/45 z-[999] flex items-center justify-center p-5"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-200 ${
+        isOpen ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+      onClick={onClose}
     >
-      <div className={`bg-white border border-[#d0d0c8] w-full max-h-[90vh] overflow-y-auto shadow-lg ${large ? 'max-w-[780px]' : 'max-w-[600px]'}`}>
-        <div className="flex justify-between items-center px-5 py-3.5 border-b border-[#d0d0c8] bg-[#f5f5f0] sticky top-0 z-10">
-          <div className="font-bold text-[16px] text-[#1a2d4a]">{title}</div>
+      <div 
+        className={`w-full ${sizeClasses[size]} glass rounded-2xl overflow-hidden transform transition-all duration-200 ${
+          isOpen ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white">{title}</h3>
           <button 
-            className="bg-none border-none text-[20px] cursor-pointer text-[#777] leading-none p-1 hover:text-[#1a1a1a]"
             onClick={onClose}
+            className="p-1 text-white/40 hover:text-white transition-colors"
           >
-            ✕
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
-        <div className="p-5">{children}</div>
+
+        {/* Body */}
+        <div className="px-6 py-4 max-h-[60vh] overflow-y-auto">
+          {children}
+        </div>
+
+        {/* Footer */}
         {footer && (
-          <div className="flex justify-end gap-2.5 px-5 py-3.5 border-t border-[#d0d0c8] bg-[#f5f5f0] sticky bottom-0">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/10 bg-white/5">
             {footer}
           </div>
         )}

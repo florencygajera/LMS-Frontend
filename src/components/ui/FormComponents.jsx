@@ -1,35 +1,48 @@
-// Form Input component
-const Input = ({ label, value, onChange, type = 'text', placeholder, className = '', ...props }) => {
+// Form Components with Dark Theme
+
+export const Input = ({ type = 'text', placeholder, value, onChange, className = '', label, error, required }) => {
   return (
-    <div className={`mb-3.5 ${className}`}>
-      {label && <label className="block text-[11px] font-bold text-[#444] mb-1 uppercase tracking-[0.5px]">{label}</label>}
+    <div className={className}>
+      {label && (
+        <label className="block text-xs font-medium text-white/60 uppercase tracking-wider mb-2">
+          {label} {required && <span className="text-red-400">*</span>}
+        </label>
+      )}
       <input
         type={type}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
-        placeholder={placeholder}
-        className="w-full px-3 py-2 border border-[#d0d0c8] font-inherit text-[13px] text-[#1a1a1a] bg-white outline-none transition-border duration-150 focus:border-[#4a5e3a]"
-        {...props}
+        className={`w-full px-4 py-3 bg-white/5 border ${
+          error ? 'border-red-500/50' : 'border-white/10'
+        } rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#00C2FF]/50 transition-colors`}
       />
+      {error && <div className="mt-1 text-xs text-red-400">{error}</div>}
     </div>
   );
 };
 
-// Select component
-const Select = ({ label, value, onChange, options, placeholder, className = '', ...props }) => {
+export const Select = ({ value, onChange, options = [], placeholder, className = '', label, required }) => {
   return (
-    <div className={`mb-3.5 ${className}`}>
-      {label && <label className="block text-[11px] font-bold text-[#444] mb-1 uppercase tracking-[0.5px]">{label}</label>}
+    <div className={className}>
+      {label && (
+        <label className="block text-xs font-medium text-white/60 uppercase tracking-wider mb-2">
+          {label} {required && <span className="text-red-400">*</span>}
+        </label>
+      )}
       <select
         value={value}
         onChange={onChange}
-        className="w-full px-3 py-2 border border-[#d0d0c8] font-inherit text-[13px] text-[#1a1a1a] bg-white cursor-pointer outline-none transition-border duration-150 focus:border-[#4a5e3a]"
-        {...props}
+        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#00C2FF]/50 transition-colors"
       >
-        {placeholder && <option value="">{placeholder}</option>}
+        {placeholder && (
+          <option value="" className="bg-[#0B0F19]">
+            {placeholder}
+          </option>
+        )}
         {options.map((opt, i) => (
-          <option key={i} value={typeof opt === 'object' ? opt.value : opt}>
-            {typeof opt === 'object' ? opt.label : opt}
+          <option key={i} value={opt.value || opt} className="bg-[#0B0F19]">
+            {opt.label || opt}
           </option>
         ))}
       </select>
@@ -37,32 +50,31 @@ const Select = ({ label, value, onChange, options, placeholder, className = '', 
   );
 };
 
-// Textarea component
-const Textarea = ({ label, value, onChange, placeholder, rows = 4, className = '', ...props }) => {
+export const Textarea = ({ placeholder, value, onChange, rows = 4, className = '', label }) => {
   return (
-    <div className={`mb-3.5 ${className}`}>
-      {label && <label className="block text-[11px] font-bold text-[#444] mb-1 uppercase tracking-[0.5px]">{label}</label>}
+    <div className={className}>
+      {label && (
+        <label className="block text-xs font-medium text-white/60 uppercase tracking-wider mb-2">
+          {label}
+        </label>
+      )}
       <textarea
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
-        placeholder={placeholder}
         rows={rows}
-        className="w-full px-3 py-2 border border-[#d0d0c8] font-inherit text-[13px] text-[#1a1a1a] bg-white outline-none transition-border duration-150 focus:border-[#4a5e3a] resize-vertical"
-        {...props}
+        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#00C2FF]/50 transition-colors resize-none"
       />
     </div>
   );
 };
 
-// Form Row component for 2 or 3 columns
-const FormRow = ({ children, cols = 2 }) => {
-  const gridClass = cols === 2 ? 'grid-cols-2' : cols === 3 ? 'grid-cols-3' : 'grid-cols-1';
+export const FormRow = ({ children, className = '' }) => {
   return (
-    <div className={`grid ${gridClass} gap-3.5`}>
+    <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${className}`}>
       {children}
     </div>
   );
 };
 
-export { Input, Select, Textarea, FormRow };
 export default { Input, Select, Textarea, FormRow };

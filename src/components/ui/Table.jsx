@@ -1,16 +1,17 @@
-// Table component
-const Table = ({ columns, data, onRowClick, className = '' }) => {
+// Table component with Dark Theme
+
+export const Table = ({ headers, data, onRowClick, className = '' }) => {
   return (
     <div className="overflow-x-auto">
-      <table className={`w-full border-collapse text-[13px] ${className}`}>
+      <table className={`w-full border-collapse text-sm ${className}`}>
         <thead>
           <tr>
-            {columns.map((col, i) => (
+            {headers.map((header, i) => (
               <th 
                 key={i}
-                className="bg-[#f5f5f0] px-3 py-2 text-left text-[11px] font-semibold text-[#444] border-b border-[#d0d0c8] border-t border-[#d0d0c8] whitespace-nowrap"
+                className="px-4 py-3 text-left text-xs font-semibold text-white/60 uppercase tracking-wider border-b border-white/10 bg-white/5"
               >
-                {col.header}
+                {header}
               </th>
             ))}
           </tr>
@@ -19,15 +20,15 @@ const Table = ({ columns, data, onRowClick, className = '' }) => {
           {data.map((row, rowIndex) => (
             <tr 
               key={rowIndex}
-              className={`${onRowClick ? 'cursor-pointer hover:bg-[#fafaf7]' : ''}`}
-              onClick={() => onRowClick?.(row)}
+              onClick={() => onRowClick && onRowClick(row)}
+              className={`border-b border-white/5 hover:bg-white/5 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
             >
-              {columns.map((col, colIndex) => (
+              {row.map((cell, cellIndex) => (
                 <td 
-                  key={colIndex}
-                  className="px-3 py-2.5 border-b border-[#eaeae5]"
+                  key={cellIndex}
+                  className="px-4 py-3 text-white/80"
                 >
-                  {col.render ? col.render(row) : row[col.accessor]}
+                  {cell}
                 </td>
               ))}
             </tr>
@@ -38,38 +39,36 @@ const Table = ({ columns, data, onRowClick, className = '' }) => {
   );
 };
 
-// Search Bar component
-const SearchBar = ({ value, onChange, placeholder = 'Search...', className = '' }) => {
+// SearchBar Component
+export const SearchBar = ({ value, onChange, placeholder, className = '' }) => {
   return (
-    <div className={`flex gap-2 mb-3.5 flex-wrap items-center ${className}`}>
+    <div className={`flex gap-2 ${className}`}>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 min-w-[180px] px-3 py-2 border border-[#d0d0c8] font-inherit text-[13px] bg-white outline-none focus:border-[#4a5e3a]"
+        className="flex-1 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/30 focus:outline-none focus:border-[#00C2FF]/50 transition-colors"
       />
     </div>
   );
 };
 
-// Select component
-const Select = ({ value, onChange, options, placeholder, className = '' }) => {
+// TableSelect Component
+export const TableSelect = ({ value, onChange, options, className = '' }) => {
   return (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`px-3 py-2 border border-[#d0d0c8] font-inherit text-[13px] bg-white cursor-pointer outline-none focus:border-[#4a5e3a] ${className}`}
+      className={`px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-[#00C2FF]/50 transition-colors ${className}`}
     >
-      {placeholder && <option value="">{placeholder}</option>}
       {options.map((opt, i) => (
-        <option key={i} value={typeof opt === 'object' ? opt.value : opt}>
-          {typeof opt === 'object' ? opt.label : opt}
+        <option key={i} value={opt.value} className="bg-[#0B0F19]">
+          {opt.label}
         </option>
       ))}
     </select>
   );
 };
 
-export { Table, SearchBar, Select };
-export default { Table, SearchBar, Select };
+export default { Table, SearchBar, TableSelect };
