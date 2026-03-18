@@ -1,6 +1,15 @@
 // Public Pages
 export { LandingPage } from './public/LandingPage';
 export { LoginPage } from './public/LoginPage';
+export { AboutPage } from './public/AboutPage';
+export { RecruitmentPage } from './public/RecruitmentPage';
+export { ResultsPage } from './public/ResultsPage';
+export { EligibilityPage } from './public/EligibilityPage';
+export { PhysicalStandardsPage } from './public/PhysicalStandardsPage';
+export { DocumentsRequiredPage } from './public/DocumentsRequiredPage';
+export { SalaryBenefitsPage } from './public/SalaryBenefitsPage';
+export { FAQPage } from './public/FAQPage';
+export { ContactPage } from './public/ContactPage';
 
 // Admin Pages
 export { AdminDashboard } from './admin/AdminDashboard';

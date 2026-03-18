@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { MainLayout } from './components/layout';
-import { LandingPage, LoginPage, AdminDashboard, AdminBattalions, BattalionDetail, SoldierDetail, AdminAllSoldiers, AdminRankings, AdminApplications, AdminSOS, AgniAssist, MLInsights, AuditLog, SoldierDashboard, SoldierTraining, SoldierSchedule, SoldierMedical, SoldierEquipment, SoldierStipend, SoldierInsights, SoldierDocs, CandidateApplication, CandidateStatus, CandidateAdmitCard, TrainerDashboard, TrainerUpload, DoctorDashboard } from './pages';
+import { 
+  LandingPage, LoginPage, AboutPage, RecruitmentPage, ResultsPage, 
+  EligibilityPage, PhysicalStandardsPage, DocumentsRequiredPage, 
+  SalaryBenefitsPage, FAQPage, ContactPage,
+  AdminDashboard, AdminBattalions, BattalionDetail, SoldierDetail, 
+  AdminAllSoldiers, AdminRankings, AdminApplications, AdminSOS, 
+  AgniAssist, MLInsights, AuditLog, SoldierDashboard, SoldierTraining, 
+  SoldierSchedule, SoldierMedical, SoldierEquipment, SoldierStipend, 
+  SoldierInsights, SoldierDocs, CandidateApplication, CandidateStatus, 
+  CandidateAdmitCard, TrainerDashboard, TrainerUpload, DoctorDashboard 
+} from './pages';
 import { EditSoldierModal, EditBattalionModal, AppReviewModal, SOSTriggerModal } from './components/modals';
 import { useAppData } from './context/AppDataContext';
 
@@ -29,16 +39,6 @@ function App() {
   // Handlers
   const saveSoldier = (updated) => {
     setSoldiers(prev => prev.map(s => s.id === updated.id ? updated : s));
-    setEditSoldier(null);
-    showSaved('Soldier details updated successfully.');
-  };
-
-  const saveBattalion = (updated) => {
-    setBattalions(prev => prev.map(b => b.id === updated.id ? updated : b));
-    setEditBattalion(null);
-    showSaved('Battalion details updated successfully.');
-  };
-
   const saveApplication = (updated) => {
     setApplications(prev => prev.map(a => a.id === updated.id ? updated : a));
     setReviewApp(null);
